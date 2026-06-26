@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('admin_panel') }} | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div>
+        <p class="eyebrow">admin</p>
+        <h1>{{ t('admin_panel') }}</h1>
+        <p>{{ t('admin_hint') }}</p>
+    </div>
+</section>
+
+<section class="section dashboard-stack">
+    <div class="dashboard-panel">
+        <div class="panel-heading">
+            <h2>{{ t('content_management') }}</h2>
+        </div>
+        <div class="dashboard-actions">
+            <a class="btn btn-small" href="{{ url_for('moderator.review_moderation') }}">{{ t('review_moderation') }}</a>
+            <a class="btn btn-small" href="{{ url_for('manager.add_photo') }}">{{ t('add_photo') }}</a>
+            <a class="btn btn-small" href="{{ url_for('manager.photos') }}">{{ t('manage_photos') }}</a>
+        </div>
+    </div>
+
+    <div class="dashboard-panel">
+        <div class="panel-heading">
+            <h2>{{ t('users') }}</h2>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>{{ t('username') }}</th>
+                        <th>{{ t('email') }}</th>
+                        <th>{{ t('role') }}</th>
+                        <th>{{ t('actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                <form class="inline-form" method="POST" action="{{ url_for('admin.update_user_role', user_id=user.id) }}">
+                                    <select name="role">
+                                        {% for role in roles %}
+                                            <option value="{{ role }}" {% if user.role == role %}selected{% endif %}>{{ role }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button class="btn btn-small" type="submit">{{ t('save') }}</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form method="POST" action="{{ url_for('admin.delete_user', user_id=user.id) }}">
+                                    <button class="btn btn-danger btn-small" type="submit">{{ t('delete') }}</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="dashboard-panel">
+        <div class="panel-heading">
+            <h2>{{ t('system_logs') }}</h2>
+        </div>
+        {% if logs %}
+            <div class="log-list">
+                {% for log in logs %}
+                    <p><span>{{ log.created_at.strftime('%d.%m.%Y %H:%M') }}</span>{{ log.action }}</p>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-state">{{ t('no_data') }}</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

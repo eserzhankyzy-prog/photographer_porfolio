@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('employee_panel') }} | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div>
+        <p class="eyebrow">employee</p>
+        <h1>{{ t('employee_panel') }}</h1>
+        <p>{{ t('employee_hint') }}</p>
+    </div>
+</section>
+
+<section class="section dashboard-panel">
+    <div class="panel-heading">
+        <h2>{{ t('orders') }}</h2>
+    </div>
+    {% if orders %}
+        <div class="work-grid">
+            {% for order in orders %}
+                <article class="inline-card">
+                    <span class="status status-{{ order.status }}">{{ order.status }}</span>
+                    <h3>{{ order.service_type }}</h3>
+                    <p>{{ order.customer_name }}</p>
+                    {% if order.notes %}
+                        <p>{{ order.notes }}</p>
+                    {% endif %}
+                    <form method="POST" action="{{ url_for('employee.complete_order', order_id=order.id) }}">
+                        <button class="btn btn-small" type="submit">{{ t('complete') }}</button>
+                    </form>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-state">{{ t('no_data') }}</p>
+    {% endif %}
+</section>
+{% endblock %}

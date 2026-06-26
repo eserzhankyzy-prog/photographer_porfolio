@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Album | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div>
+        <p class="eyebrow">{{ t('gallery_preview_title') }}</p>
+        <h1>Album {{ album_id }}</h1>
+    </div>
+</section>
+
+<section class="section">
+    <div class="portfolio-grid gallery-grid">
+        <article class="photo-card photo">
+            <button class="photo-button" type="button" data-lightbox data-full="{{ url_for('static', filename='uploads/wedding-vertical.png') }}" data-caption="Wedding">
+                <img src="{{ url_for('static', filename='uploads/wedding-vertical.png') }}" alt="Wedding">
+            </button>
+            <div class="photo-card-body">
+                <p>Wedding</p>
+                <h3>{{ t('service_wedding') }}</h3>
+            </div>
+        </article>
+        <article class="photo-card photo">
+            <button class="photo-button" type="button" data-lightbox data-full="{{ url_for('static', filename='uploads/full-portrait.png') }}" data-caption="Portrait">
+                <img src="{{ url_for('static', filename='uploads/full-portrait.png') }}" alt="Portrait">
+            </button>
+            <div class="photo-card-body">
+                <p>Portrait</p>
+                <h3>{{ t('service_portrait') }}</h3>
+            </div>
+        </article>
+    </div>
+</section>
+
+<div class="lightbox" id="lightbox" aria-modal="true" role="dialog" aria-label="{{ t('open_photo') }}" hidden>
+    <button class="lightbox-close" type="button" data-lightbox-close aria-label="{{ t('close') }}">×</button>
+    <figure>
+        <img id="lightbox-img" src="" alt="">
+        <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+</div>
+{% endblock %}

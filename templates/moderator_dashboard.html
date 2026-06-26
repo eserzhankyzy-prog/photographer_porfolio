@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('moderator_panel') }} | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div>
+        <p class="eyebrow">moderator</p>
+        <h1>{{ t('moderator_panel') }}</h1>
+        <p>{{ t('moderator_hint') }}</p>
+    </div>
+</section>
+
+<section class="section dashboard-stack">
+<div class="dashboard-panel">
+    <div class="panel-heading">
+        <h2>{{ t('review_moderation') }}</h2>
+    </div>
+    <p class="empty-state">{{ pending_count }} {{ t('pending_reviews_count') }}</p>
+    <a class="btn btn-small" href="{{ url_for('moderator.review_moderation') }}">{{ t('open_review_moderation') }}</a>
+</div>
+
+<div class="dashboard-panel">
+    <div class="panel-heading">
+        <h2>{{ t('recent_reviews') }}</h2>
+    </div>
+    {% if reviews %}
+        <div class="review-list">
+            {% for review in reviews %}
+                <article class="inline-card">
+                    <div class="stars">{{ '★' * review.rating }}</div>
+                    <h3>{{ review.author }}</h3>
+                    <p>{{ review.text }}</p>
+                    <span class="status {% if review.approved %}status-completed{% else %}status-pending{% endif %}">
+                        {% if review.approved %}{{ t('approved_status') }}{% else %}{{ t('pending_status') }}{% endif %}
+                    </span>
+                    <div class="row-actions">
+                        {% if not review.approved %}
+                            <form method="POST" action="{{ url_for('moderator.approve_review', review_id=review.id) }}">
+                                <button class="btn btn-small" type="submit">{{ t('approve') }}</button>
+                            </form>
+                        {% endif %}
+                        <form method="POST" action="{{ url_for('moderator.delete_review', review_id=review.id) }}">
+                            <button class="btn btn-danger btn-small" type="submit">{{ t('delete') }}</button>
+                        </form>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-state">{{ t('no_data') }}</p>
+    {% endif %}
+</div>
+</section>
+{% endblock %}

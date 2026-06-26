@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('add_photo') }} | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div>
+        <p class="eyebrow">{{ t('photos_label') }}</p>
+        <h1>{{ t('add_photo') }}</h1>
+        <p>{{ t('add_photo_text') }}</p>
+    </div>
+</section>
+
+<section class="auth-page">
+    <div class="auth-panel wide">
+        <form method="POST" enctype="multipart/form-data" class="form-card">
+            <label for="title">{{ t('photo_title') }}</label>
+            <input id="title" type="text" name="title" required>
+
+            <label for="category">{{ t('category') }}</label>
+            <select id="category" name="category" required>
+                {% for category in categories %}
+                    <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="description">{{ t('description') }}</label>
+            <textarea id="description" name="description" rows="4"></textarea>
+
+            <label for="image">{{ t('image_file') }}</label>
+            <input id="image" type="file" name="image" accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp" required>
+
+            <label for="album_id">{{ t('album') }}</label>
+            <select id="album_id" name="album_id">
+                <option value="">{{ t('no_album') }}</option>
+                {% for album in albums %}
+                    <option value="{{ album.id }}">{{ album.title }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="price">{{ t('price') }}</label>
+            <input id="price" type="number" name="price" min="0" step="0.01">
+
+            <label for="shoot_date">{{ t('shoot_date') }}</label>
+            <input id="shoot_date" type="date" name="shoot_date">
+
+            <button class="btn btn-primary" type="submit">{{ t('upload_photo') }}</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

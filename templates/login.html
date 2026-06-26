@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('login_title') }} | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="auth-panel">
+        <p class="section-kicker">{{ t('site_name') }}</p>
+        <h1>{{ t('login_title') }}</h1>
+        <form method="POST" class="form-card">
+            <label for="email">{{ t('email') }}</label>
+            <input id="email" type="email" name="email" autocomplete="email" required>
+
+            <label for="password">{{ t('password') }}</label>
+            <input id="password" type="password" name="password" autocomplete="current-password" required>
+
+            <button class="btn btn-primary" type="submit">{{ t('submit_login') }}</button>
+        </form>
+        <p class="auth-note">{{ t('need_account') }} <a href="{{ url_for('auth.register') }}">{{ t('nav_register') }}</a></p>
+    </div>
+</section>
+{% endblock %}

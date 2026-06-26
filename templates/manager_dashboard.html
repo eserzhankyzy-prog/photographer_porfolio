@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('manager_panel') }} | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div>
+        <p class="eyebrow">manager</p>
+        <h1>{{ t('manager_panel') }}</h1>
+        <p>{{ t('manager_hint') }}</p>
+    </div>
+</section>
+
+<section class="section dashboard-stack">
+<div class="dashboard-panel">
+    <div class="panel-heading">
+        <h2>{{ t('content_management') }}</h2>
+    </div>
+    <div class="dashboard-actions">
+        <a class="btn btn-small" href="{{ url_for('moderator.review_moderation') }}">{{ t('review_moderation') }}</a>
+        <a class="btn btn-small" href="{{ url_for('manager.add_photo') }}">{{ t('add_photo') }}</a>
+        <a class="btn btn-small" href="{{ url_for('manager.photos') }}">{{ t('manage_photos') }}</a>
+    </div>
+</div>
+
+<div class="dashboard-panel">
+    <div class="panel-heading">
+        <h2>{{ t('orders') }}</h2>
+    </div>
+    {% if orders %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{{ t('customer') }}</th>
+                        <th>{{ t('service_type') }}</th>
+                        <th>{{ t('status') }}</th>
+                        <th>{{ t('date') }}</th>
+                        <th>{{ t('actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>
+                                <strong>{{ order.customer_name }}</strong>
+                                <span>{{ order.customer_email or '' }}</span>
+                            </td>
+                            <td>{{ order.service_type }}</td>
+                            <td><span class="status status-{{ order.status }}">{{ order.status }}</span></td>
+                            <td>{{ order.order_date.strftime('%d.%m.%Y') }}</td>
+                            <td>
+                                <form class="inline-form" method="POST" action="{{ url_for('manager.update_order_status', order_id=order.id) }}">
+                                    <select name="status">
+                                        {% for status in statuses %}
+                                            <option value="{{ status }}" {% if order.status == status %}selected{% endif %}>{{ status }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button class="btn btn-small" type="submit">{{ t('save') }}</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="empty-state">{{ t('no_data') }}</p>
+    {% endif %}
+</div>
+</section>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('review_title') }} | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="auth-panel wide">
+        <p class="section-kicker">{{ t('reviews_title') }}</p>
+        <h1>{{ t('review_title') }}</h1>
+        <p>{{ t('review_text') }}</p>
+        <form method="POST" class="form-card">
+            <label for="author">{{ t('author') }}</label>
+            <input id="author" type="text" name="author" value="{{ current_user.username }}" required>
+
+            <label for="text">{{ t('review_body') }}</label>
+            <textarea id="text" name="text" rows="5" required></textarea>
+
+            <label for="rating">{{ t('rating') }}</label>
+            <input id="rating" type="number" name="rating" min="1" max="5" value="5" required>
+
+            <button class="btn btn-primary" type="submit">{{ t('send_review') }}</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

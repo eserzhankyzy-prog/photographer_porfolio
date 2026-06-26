@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('profile_title') }} | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div>
+        <p class="eyebrow">{{ current_user.role }}</p>
+        <h1>{{ t('profile_title') }}</h1>
+        <p>{{ t('profile_text') }}</p>
+    </div>
+</section>
+
+<section class="section dashboard-layout">
+    <aside class="profile-card">
+        <div class="avatar">{{ current_user.username[:1]|upper }}</div>
+        <h2>{{ current_user.username }}</h2>
+        <p>{{ current_user.email }}</p>
+        <span class="role-pill">{{ current_user.role }}</span>
+    </aside>
+
+    <div class="dashboard-stack">
+        <div class="dashboard-panel">
+            <div class="panel-heading">
+                <h2>{{ t('my_orders') }}</h2>
+                <a class="btn btn-small" href="{{ url_for('orders.create_order') }}">{{ t('nav_order') }}</a>
+            </div>
+            {% if orders %}
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>{{ t('service_type') }}</th>
+                                <th>{{ t('status') }}</th>
+                                <th>{{ t('date') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                                <tr>
+                                    <td>{{ order.service_type }}</td>
+                                    <td><span class="status status-{{ order.status }}">{{ order.status }}</span></td>
+                                    <td>{{ order.order_date.strftime('%d.%m.%Y') }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="empty-state">{{ t('no_data') }}</p>
+            {% endif %}
+        </div>
+
+        <div class="dashboard-panel">
+            <div class="panel-heading">
+                <h2>{{ t('my_reviews') }}</h2>
+                <a class="btn btn-small" href="{{ url_for('reviews.create_review') }}">{{ t('review_title') }}</a>
+            </div>
+            {% if reviews %}
+                <div class="review-list">
+                    {% for review in reviews %}
+                        <article class="inline-card">
+                            <div class="stars">{{ '★' * review.rating }}</div>
+                            <p>{{ review.text }}</p>
+                            <span class="status {% if review.approved %}status-completed{% else %}status-pending{% endif %}">
+                                {% if review.approved %}approved{% else %}pending{% endif %}
+                            </span>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty-state">{{ t('no_data') }}</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

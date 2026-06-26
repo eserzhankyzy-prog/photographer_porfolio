@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('site_name') }} | {{ t('site_title') }}{% endblock %}
+
+{% block content %}
+<section class="hero" style="--hero-image: url('{{ url_for('static', filename='uploads/wedding-horizontal.png') }}');">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <p class="eyebrow">{{ t('hero_kicker') }}</p>
+        <h1>{{ t('hero_title') }}</h1>
+        <p class="hero-text">{{ t('hero_text') }}</p>
+        <div class="hero-actions">
+            <a class="btn btn-primary" href="{{ url_for('orders.create_order') }}">{{ t('hero_cta') }}</a>
+            <a class="btn btn-outline-light" href="{{ url_for('gallery.gallery') }}">{{ t('hero_secondary') }}</a>
+        </div>
+        <div class="hero-stats" aria-label="Studio statistics">
+            <div>
+                <strong>{{ t('hero_stat_1_value') }}</strong>
+                <span>{{ t('hero_stat_1') }}</span>
+            </div>
+            <div>
+                <strong>{{ t('hero_stat_2_value') }}</strong>
+                <span>{{ t('hero_stat_2') }}</span>
+            </div>
+            <div>
+                <strong>{{ t('hero_stat_3_value') }}</strong>
+                <span>{{ t('hero_stat_3') }}</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section-split" id="about">
+    <div>
+        <p class="section-kicker">{{ t('site_name') }}</p>
+        <h2>{{ t('about_title') }}</h2>
+    </div>
+    <div class="section-copy">
+        <p>{{ t('about_text') }}</p>
+        <ul class="check-list">
+            <li>{{ t('about_point_1') }}</li>
+            <li>{{ t('about_point_2') }}</li>
+            <li>{{ t('about_point_3') }}</li>
+        </ul>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-heading">
+        <div>
+            <p class="section-kicker">{{ t('gallery_preview_title') }}</p>
+            <h2>{{ t('gallery_preview_text') }}</h2>
+        </div>
+        <a class="text-link" href="{{ url_for('gallery.gallery') }}">{{ t('view_all') }}</a>
+    </div>
+
+    <div class="portfolio-grid portfolio-grid-preview">
+        <article class="photo-card photo" data-category="Wedding">
+            <img src="{{ url_for('static', filename='uploads/wedding-main.png') }}" alt="Wedding photography">
+            <div class="photo-card-body">
+                <p>Wedding</p>
+                <h3>{{ t('service_wedding') }}</h3>
+            </div>
+        </article>
+        <article class="photo-card photo" data-category="Portrait">
+            <img src="{{ url_for('static', filename='uploads/portrait-main.png') }}" alt="Portrait photography">
+            <div class="photo-card-body">
+                <p>Portrait</p>
+                <h3>{{ t('service_portrait') }}</h3>
+            </div>
+        </article>
+        <article class="photo-card photo" data-category="Family">
+            <img src="{{ url_for('static', filename='uploads/family-main.png') }}" alt="Family photography">
+            <div class="photo-card-body">
+                <p>Family</p>
+                <h3>{{ t('service_family') }}</h3>
+            </div>
+        </article>
+        <article class="photo-card photo" data-category="Event">
+            <img src="{{ url_for('static', filename='uploads/event-main.png') }}" alt="Event photography">
+            <div class="photo-card-body">
+                <p>Event</p>
+                <h3>{{ t('service_event') }}</h3>
+            </div>
+        </article>
+    </div>
+</section>
+
+<section class="section section-muted" id="services">
+    <div class="section-heading">
+        <div>
+            <p class="section-kicker">{{ t('services_title') }}</p>
+            <h2>{{ t('services_text') }}</h2>
+        </div>
+    </div>
+
+    <div class="service-grid">
+        <article class="service-card">
+            <span>01</span>
+            <h3>{{ t('service_wedding') }}</h3>
+            <p>{{ t('service_wedding_text') }}</p>
+        </article>
+        <article class="service-card">
+            <span>02</span>
+            <h3>{{ t('service_portrait') }}</h3>
+            <p>{{ t('service_portrait_text') }}</p>
+        </article>
+        <article class="service-card">
+            <span>03</span>
+            <h3>{{ t('service_family') }}</h3>
+            <p>{{ t('service_family_text') }}</p>
+        </article>
+        <article class="service-card">
+            <span>04</span>
+            <h3>{{ t('service_event') }}</h3>
+            <p>{{ t('service_event_text') }}</p>
+        </article>
+    </div>
+</section>
+
+<section class="section" id="reviews">
+    <div class="section-heading">
+        <div>
+            <p class="section-kicker">{{ t('reviews_title') }}</p>
+            <h2>{{ t('reviews_title') }}</h2>
+        </div>
+        <a class="text-link" href="{{ url_for('reviews.create_review') }}">{{ t('review_title') }}</a>
+    </div>
+
+    <div class="review-grid">
+        {% if approved_reviews %}
+            {% for review in approved_reviews %}
+                <article class="review-card">
+                    <div class="stars">{{ '*' * (review.rating or 0) }}</div>
+                    <p>{{ review.text }}</p>
+                    <strong>{{ review.author }}</strong>
+                </article>
+            {% endfor %}
+        {% else %}
+            <p class="empty-state">{{ t('no_data') }}</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="section contact-section" id="contact">
+    <div>
+        <p class="section-kicker">{{ t('contact_title') }}</p>
+        <h2>{{ t('contact_text') }}</h2>
+        <a class="btn btn-primary" href="{{ url_for('orders.create_order') }}">{{ t('hero_cta') }}</a>
+    </div>
+    <div class="contact-list">
+        <p><span>{{ t('contact_phone') }}</span> +7 778 508 70 91</p>
+        <p><span>{{ t('contact_email') }}</span> Ailaer@studio.com</p>
+        <p><span>{{ t('contact_location') }}</span> Almaty, Kazakhstan</p>
+    </div>
+</section>
+{% endblock %}

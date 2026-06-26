@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('gallery_title') }} | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div>
+        <p class="eyebrow">{{ t('gallery_preview_title') }}</p>
+        <h1>{{ t('gallery_title') }}</h1>
+        <p>{{ t('gallery_text') }}</p>
+    </div>
+</section>
+
+<section class="section gallery-section">
+    <div class="filter-bar" aria-label="Gallery filter">
+        <button class="filter-btn active" type="button" data-filter="all">{{ t('filter_all') }}</button>
+        <button class="filter-btn" type="button" data-filter="Wedding">{{ t('filter_wedding') }}</button>
+        <button class="filter-btn" type="button" data-filter="Portrait">{{ t('filter_portrait') }}</button>
+        <button class="filter-btn" type="button" data-filter="Family">{{ t('filter_family') }}</button>
+        <button class="filter-btn" type="button" data-filter="Event">{{ t('filter_event') }}</button>
+    </div>
+
+    {% if photos %}
+        <div class="portfolio-grid gallery-grid">
+            {% for photo in photos %}
+                <article class="photo-card photo {% if loop.index is divisibleby 5 %}wide{% elif loop.index is divisibleby 3 %}tall{% endif %}" data-category="{{ photo.category }}">
+                    <button class="photo-button" type="button" data-lightbox data-full="{{ url_for('static', filename=photo.image_path) }}" data-caption="{{ photo.title }}">
+                        <img src="{{ url_for('static', filename=photo.image_path) }}" alt="{{ photo.title }}">
+                    </button>
+                    <div class="photo-card-body">
+                        <p>{{ photo.category }}</p>
+                        <h3>{{ photo.title }}</h3>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-state">{{ t('no_data') }}</p>
+    {% endif %}
+</section>
+
+<div class="lightbox" id="lightbox" aria-modal="true" role="dialog" aria-label="{{ t('open_photo') }}" hidden>
+    <button class="lightbox-close" type="button" data-lightbox-close aria-label="{{ t('close') }}">x</button>
+    <figure>
+        <img id="lightbox-img" src="" alt="">
+        <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+</div>
+{% endblock %}

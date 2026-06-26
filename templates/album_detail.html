@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}{{ album.title }} | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div>
+        <p class="eyebrow">{{ t('gallery_preview_title') }}</p>
+        <h1>{{ album.title }}</h1>
+        <p>{{ album.description }}</p>
+    </div>
+</section>
+
+<section class="section">
+    {% if photos %}
+        <div class="portfolio-grid gallery-grid">
+            {% for photo in photos %}
+                <article class="photo-card photo">
+                    <button class="photo-button" type="button" data-lightbox data-full="{{ url_for('static', filename=photo.image_path) }}" data-caption="{{ photo.title }}">
+                        <img src="{{ url_for('static', filename=photo.image_path) }}" alt="{{ photo.title }}">
+                    </button>
+                    <div class="photo-card-body">
+                        <p>{{ album.title }}</p>
+                        <h3>{{ photo.title }}</h3>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-state">{{ t('album_empty') }}</p>
+    {% endif %}
+</section>
+
+<div class="lightbox" id="lightbox" aria-modal="true" role="dialog" aria-label="{{ t('open_photo') }}" hidden>
+    <button class="lightbox-close" type="button" data-lightbox-close aria-label="{{ t('close') }}">×</button>
+    <figure>
+        <img id="lightbox-img" src="" alt="">
+        <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+</div>
+{% endblock %}

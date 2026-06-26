@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('contact_title') }} | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="section contact-section">
+    <div>
+        <p class="section-kicker">{{ t('contact_title') }}</p>
+        <h1>{{ t('contact_text') }}</h1>
+        <a class="btn btn-primary" href="{{ url_for('orders.create_order') }}">{{ t('hero_cta') }}</a>
+    </div>
+    <div class="contact-list">
+        <p><span>{{ t('contact_phone') }}</span> +7 778 508 70 91</p>
+        <p><span>{{ t('contact_email') }}</span> Ailaer@studio.com</p>
+        <p><span>{{ t('contact_location') }}</span> Almaty, Kazakhstan</p>
+    </div>
+</section>
+{% endblock %}

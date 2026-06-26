@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('review_moderation') }} | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div>
+        <p class="eyebrow">{{ t('review_moderation') }}</p>
+        <h1>{{ t('review_moderation') }}</h1>
+        <p>{{ t('review_moderation_text') }}</p>
+    </div>
+</section>
+
+<section class="section dashboard-panel">
+    <div class="panel-heading">
+        <h2>{{ t('pending_reviews') }}</h2>
+    </div>
+
+    {% if reviews %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{{ t('author_label') }}</th>
+                        <th>{{ t('rating') }}</th>
+                        <th>{{ t('text_label') }}</th>
+                        <th>{{ t('date') }}</th>
+                        <th>{{ t('status') }}</th>
+                        <th>{{ t('actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for review in reviews %}
+                        <tr>
+                            <td>{{ review.author }}</td>
+                            <td><span class="stars">{{ '*' * (review.rating or 0) }}</span></td>
+                            <td>{{ review.text }}</td>
+                            <td>{% if review.created_at %}{{ review.created_at.strftime('%d.%m.%Y') }}{% endif %}</td>
+                            <td><span class="status status-pending">{{ t('pending_status') }}</span></td>
+                            <td>
+                                <div class="row-actions">
+                                    <form method="POST" action="{{ url_for('moderator.approve_review', review_id=review.id) }}">
+                                        <button class="btn btn-small" type="submit">{{ t('approve') }}</button>
+                                    </form>
+                                    <form method="POST" action="{{ url_for('moderator.delete_review', review_id=review.id) }}">
+                                        <button class="btn btn-danger btn-small" type="submit">{{ t('delete') }}</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="empty-state">{{ t('no_data') }}</p>
+    {% endif %}
+</section>
+{% endblock %}

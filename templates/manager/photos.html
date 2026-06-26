@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('manage_photos') }} | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div>
+        <p class="eyebrow">{{ t('photos_label') }}</p>
+        <h1>{{ t('manage_photos') }}</h1>
+        <p>{{ t('manage_photos_text') }}</p>
+    </div>
+</section>
+
+<section class="section dashboard-stack">
+    <div class="dashboard-panel">
+        <div class="panel-heading">
+            <h2>{{ t('all_photos') }}</h2>
+            <a class="btn btn-small" href="{{ url_for('manager.add_photo') }}">{{ t('add_photo') }}</a>
+        </div>
+
+        {% if photos %}
+            <div class="photo-management-grid">
+                {% for photo in photos %}
+                    <article class="manage-photo-card">
+                        <img src="{{ url_for('static', filename=photo.image_path) }}" alt="{{ photo.title }}">
+                        <div>
+                            <span class="status">{{ photo.category }}</span>
+                            <h3>{{ photo.title }}</h3>
+                            <p>{% if photo.created_at %}{{ photo.created_at.strftime('%d.%m.%Y') }}{% endif %}</p>
+                            <form method="POST" action="{{ url_for('manager.delete_photo', photo_id=photo.id) }}" data-confirm="{{ t('delete_photo_confirm') }}">
+                                <button class="btn btn-danger btn-small" type="submit">{{ t('delete') }}</button>
+                            </form>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-state">{{ t('no_data') }}</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

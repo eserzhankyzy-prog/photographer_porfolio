@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('order_title') }} | {{ t('site_name') }}{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="auth-panel wide">
+        <p class="section-kicker">{{ t('nav_order') }}</p>
+        <h1>{{ t('order_title') }}</h1>
+        <p>{{ t('order_text') }}</p>
+        <form method="POST" class="form-card">
+            <label for="customer_name">{{ t('customer_name') }}</label>
+            <input id="customer_name" type="text" name="customer_name" value="{{ current_user.username }}" required>
+
+            <label for="service_type">{{ t('service_type') }}</label>
+            <select id="service_type" name="service_type" required>
+                <option value="Wedding Photography">{{ t('service_wedding') }}</option>
+                <option value="Portrait Photography">{{ t('service_portrait') }}</option>
+                <option value="Family Photography">{{ t('service_family') }}</option>
+                <option value="Event Photography">{{ t('service_event') }}</option>
+            </select>
+
+            <label for="notes">{{ t('notes') }}</label>
+            <textarea id="notes" name="notes" rows="5"></textarea>
+
+            <button class="btn btn-primary" type="submit">{{ t('send_order') }}</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
